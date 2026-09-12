@@ -79,11 +79,18 @@ def find_available_port(host: str = DEFAULT_HOST, start_port: int = DEFAULT_PORT
                 continue
     return start_port
 
-def open_desktop_window_delayed(url: str, delay: float = 1.0):
+def open_desktop_window_delayed(url: str, delay: float = 0.8):
     """Mở cửa sổ Desktop ứng dụng trong luồng nền sau khi server đã sẵn sàng"""
     def _launcher():
         time.sleep(delay)
-        opened = False
+        
+        # Thư mục profile cô lập cho app để không xung đột lockfile (tránh lỗi ProcessSingleton Error 32 khi chạy quyền Admin)
+        user_data_dir = os.path.join(os.environ.get("TEMP", os.path.expanduser("~")), "BeTapNoi_Profile")
+        try:
+            os.makedirs(user_data_dir, exist_ok=True)
+        except Exception:
+            pass
+
         browser_candidates = [
             r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
             r"C:\Program Files\Microsoft\Edge\Application\msedge.exe",
@@ -96,22 +103,25 @@ def open_desktop_window_delayed(url: str, delay: float = 1.0):
         for browser_path in browser_candidates:
             if os.path.isfile(browser_path):
                 try:
-                    print(f"🖥️  Đang mở cửa sổ giao diện ứng dụng ({os.path.basename(browser_path)})...")
+                    print(f"🖥️  Đang mở cửa sổ ứng dụng: {os.path.basename(browser_path)}...")
                     cmd = [
                         browser_path,
                         f"--app={url}",
-                        "--new-window",
-                        "--window-size=1340,880",
-                        "--app-auto-launched"
+                        f"--user-data-dir={user_data_dir}",
+                        "--no-first-run",
+                        "--no-default-browser-check",
+                        "--window-size=1340,880"
                     ]
                     subprocess.Popen(cmd)
-                    opened = True
-                    break
+                    return
                 except Exception as e:
-                    print(f"[*] Lỗi mở qua {os.path.basename(browser_path)}: {e}")
+                    print(f"[*] Lỗi mở app mode: {e}")
 
-        if not opened:
-            print("🌐 Đang mở ứng dụng trên trình duyệt mặc định...")
+        # Fallback trực tiếp bằng ShellExecute của Windows
+        print("🌐 Đang mở ứng dụng trên trình duyệt...")
+        try:
+            os.startfile(url)
+        except Exception:
             webbrowser.open(url)
 
     thread = threading.Thread(target=_launcher, daemon=True)
@@ -131,10 +141,11 @@ def main():
     print(f"🌸 {APP_TITLE}")
     print(f"✨ Phiên bản: {APP_VERSION}")
     print(f"🌐 Ứng dụng hoạt động tại: {url}")
+    print(f"💡 Cửa sổ ứng dụng sẽ mở ngay. Nhấn Ctrl+C để đóng ứng dụng.")
     print("=" * 65)
 
     if not args.no_open:
-        open_desktop_window_delayed(url, delay=1.0)
+        open_desktop_window_delayed(url, delay=0.8)
 
     # Chạy uvicorn trực tiếp trên main thread
     uvicorn.run("app.main:app", host=args.host, port=actual_port, log_level="warning", reload=False)
