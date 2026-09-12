@@ -1,25 +1,34 @@
 @echo off
-chcp 65001 > nul
-title Bé Tập Nói - Ứng Dụng Học Nói Tiếng Việt (2-5 Tuổi)
-
-echo ===================================================================
-echo 🌸 Khởi động Ứng Dụng Bé Tập Nói (BeTapNoi - Vietnamese for Kids)
-echo ===================================================================
-
+setlocal
 cd /d "%~dp0"
+title Be Tap Noi - Tieng Viet Cho Be (2-5 Tuoi)
 
-REM Kiểm tra môi trường ảo
+echo ====================================================
+echo      Be Tap Noi - Vietnamese Speech Suite
+echo ====================================================
+
+REM 1. Kiem tra moi truong ao .venv
 if not exist ".venv\Scripts\python.exe" (
-    echo [*] Đang thiết lập môi trường ảo Python...
-    "D:\Pinokio\bin\miniconda\python.exe" -m venv .venv
-    call .venv\Scripts\pip.exe install -r requirements.txt
+    echo [1/3] Khoi tao moi truong ao Python .venv...
+    if exist "D:\Pinokio\bin\miniconda\python.exe" (
+        "D:\Pinokio\bin\miniconda\python.exe" -m venv .venv
+    ) else if exist "D:\Pinokio\bin\miniforge\python.exe" (
+        "D:\Pinokio\bin\miniforge\python.exe" -m venv .venv
+    ) else (
+        python -m venv .venv
+    )
 )
 
-echo [*] Khởi chạy cửa sổ ứng dụng Bé Tập Nói Desktop...
-call .venv\Scripts\python.exe main.py
+REM 2. Kiem tra va cai dat thu vien
+echo [2/3] Kiem tra va cai dat thu vien requirements.txt...
+".venv\Scripts\python.exe" -m pip install -r requirements.txt --quiet
 
-if %errorlevel% neq 0 (
+REM 3. Khoi chay Desktop Application
+echo [3/3] Khoi chay ung dung Be Tap Noi...
+".venv\Scripts\python.exe" main.py %*
+
+if %ERRORLEVEL% NEQ 0 (
     echo.
-    echo [!] Đã xảy ra sự cố khi khởi chạy. Vui lòng kiểm tra lại môi trường Python.
+    echo [!] Chuong trinh gap loi khi khoi chay.
     pause
 )
