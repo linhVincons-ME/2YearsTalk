@@ -70,95 +70,55 @@ def get_index():
 
 def find_available_port(host: str = DEFAULT_HOST, start_port: int = DEFAULT_PORT) -> int:
     """Tự động tìm cổng còn trống nếu cổng mặc định đã bị chiếm"""
-    port = start_port
-    while port < start_port + 100:
+    for port in range(start_port, start_port + 50):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            if s.connect_ex((host, port)) != 0:
+            try:
+                s.bind((host, port))
                 return port
-            port += 1
+            except OSError:
+                continue
     return start_port
 
-def run_server(host: str, port: int):
-    """Chạy Uvicorn Server"""
-    config = uvicorn.Config(
-        app=app,
-        host=host,
-        port=port,
-        log_level="warning",
-        access_log=False
-    )
-    server = uvicorn.Server(config)
-    server.run()
+def open_desktop_window_delayed(url: str, delay: float = 1.0):
+    """Mở cửa sổ Desktop ứng dụng trong luồng nền sau khi server đã sẵn sàng"""
+    def _launcher():
+        time.sleep(delay)
+        browser_candidates = [
+            r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
+            r"C:\Program Files\Microsoft\Edge\Application\msedge.exe",
+            r"C:\Program Files\Google\Chrome\Application\chrome.exe",
+            r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
+            os.path.expandvars(r"%LOCALAPPDATA%\Microsoft\Edge\Application\msedge.exe"),
+            os.path.expandvars(r"%LOCALAPPDATA%\Google\Chrome\Application\chrome.exe"),
+        ]
 
-def launch_desktop_window(url: str):
-    """
-    Khởi chạy cửa sổ ứng dụng Desktop Native:
-    Ưu tiên 1: Edge / Chrome App Mode (mở riêng biệt như ứng dụng native, hỗ trợ microphone Web Speech API cực mượt)
-    Ưu tiên 2: pywebview Native Window
-    Ưu tiên 3: Trình duyệt mặc định của hệ thống
-    """
-    browser_candidates = [
-        os.path.expandvars(r"%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe"),
-        os.path.expandvars(r"%ProgramFiles%\Microsoft\Edge\Application\msedge.exe"),
-        os.path.expandvars(r"%ProgramFiles%\Google\Chrome\Application\chrome.exe"),
-        os.path.expandvars(r"%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe"),
-        os.path.expandvars(r"%LocalAppData%\Google\Chrome\Application\chrome.exe"),
-        os.path.expandvars(r"%LocalAppData%\Microsoft\Edge\Application\msedge.exe"),
-    ]
+        for browser_path in browser_candidates:
+            if os.path.isfile(browser_path):
+                try:
+                    print(f"🖥️  Đang mở cửa sổ giao diện ứng dụng ({os.path.basename(browser_path)})...")
+                    cmd = [
+                        browser_path,
+                        f"--app={url}",
+                        "--window-size=1340,880",
+                        "--app-auto-launched"
+                    ]
+                    subprocess.Popen(cmd)
+                    return
+                except Exception as e:
+                    print(f"[*] Thử mở trình duyệt mặc định: {e}")
 
-    for browser_path in browser_candidates:
-        if os.path.exists(browser_path):
-            try:
-                print(f"🖥️  Khởi chạy cửa sổ Desktop chuyên dụng qua: {os.path.basename(browser_path)}")
-                cmd = [
-                    browser_path,
-                    f"--app={url}",
-                    "--window-size=1300,850",
-                    "--window-position=50,50",
-                    "--disable-features=Translate",
-                    "--enable-features=WebSpeechAPI",
-                    "--autoplay-policy=no-user-gesture-required"
-                ]
-                proc = subprocess.Popen(cmd)
-                proc.wait()
-                print("👋 Ứng dụng Bé Tập Nói đã được đóng.")
-                return True
-            except Exception as e:
-                print(f"[*] Thử phương thức tiếp theo: {e}")
+        # Fallback
+        print("🌐 Đang mở ứng dụng trên trình duyệt mặc định...")
+        webbrowser.open(url)
 
-    # Thử qua pywebview
-    try:
-        import webview
-        print("🖥️  Khởi chạy qua pywebview...")
-        window = webview.create_window(
-            title=APP_TITLE,
-            url=url,
-            width=1300,
-            height=850,
-            min_size=(960, 640),
-            text_select=True
-        )
-        webview.start(debug=False)
-        print("👋 Ứng dụng Bé Tập Nói đã được đóng.")
-        return True
-    except Exception:
-        pass
-
-    # Fallback mở browser
-    print("🌐 Mở ứng dụng trên trình duyệt mặc định...")
-    webbrowser.open(url)
-    try:
-        while True:
-            time.sleep(1)
-    except KeyboardInterrupt:
-        pass
-    return False
+    thread = threading.Thread(target=_launcher, daemon=True)
+    thread.start()
 
 def main():
     parser = argparse.ArgumentParser(description="Khởi chạy ứng dụng Bé Tập Nói Desktop")
     parser.add_argument("--host", default=DEFAULT_HOST, help="Host để bind web server")
     parser.add_argument("--port", type=int, default=None, help="Cổng chạy web server")
-    parser.add_argument("--web", action="store_true", help="Chạy ở chế độ trình duyệt Web thông thường")
+    parser.add_argument("--no-open", action="store_true", help="Không tự động mở giao diện")
     args = parser.parse_args()
 
     actual_port = args.port if args.port else find_available_port(args.host, DEFAULT_PORT)
@@ -167,38 +127,14 @@ def main():
     print("=" * 65)
     print(f"🌸 {APP_TITLE}")
     print(f"✨ Phiên bản: {APP_VERSION}")
-    print(f"🌐 Địa chỉ Backend: {url}")
+    print(f"🌐 Ứng dụng hoạt động tại: {url}")
     print("=" * 65)
 
-    if args.web:
-        webbrowser.open(url)
-        uvicorn.run("app.main:app", host=args.host, port=actual_port, reload=False)
-        return
+    if not args.no_open:
+        open_desktop_window_delayed(url, delay=1.0)
 
-    # Khởi động server trong background thread
-    server_thread = threading.Thread(target=run_server, args=(args.host, actual_port), daemon=True)
-    server_thread.start()
-
-    # Đợi server sẵn sàng
-    max_wait = 10.0
-    start_time = time.time()
-    server_ready = False
-    while time.time() - start_time < max_wait:
-        try:
-            with urllib.request.urlopen(f"{url}/api/stats", timeout=1) as resp:
-                if resp.status == 200:
-                    server_ready = True
-                    break
-        except Exception:
-            time.sleep(0.3)
-
-    if not server_ready:
-        print("⚠️ Không thể kết nối tới server, mở trình duyệt mặc định...")
-        webbrowser.open(url)
-        return
-
-    # Mở cửa sổ Desktop
-    launch_desktop_window(url)
+    # Chạy uvicorn trực tiếp trên main thread
+    uvicorn.run("app.main:app", host=args.host, port=actual_port, log_level="warning", reload=False)
 
 if __name__ == "__main__":
     main()
