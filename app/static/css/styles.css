@@ -1,0 +1,982 @@
+/* ==========================================================================
+   Bé Tập Nói (BeTapNoi) - Design System & Styles
+   Tối ưu hóa thị giác cho trẻ mầm non: Sặc sỡ, ấm áp, bo tròn, hoạt họa sinh động
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap');
+
+:root {
+    --primary: #FF6B81;
+    --primary-light: #FF8E9E;
+    --secondary: #2ED573;
+    --secondary-light: #7BED9F;
+    --accent-blue: #1E90FF;
+    --accent-blue-light: #70A1FF;
+    --accent-yellow: #FFA502;
+    --accent-yellow-light: #FFEAA7;
+    --accent-purple: #9B59B6;
+    --accent-purple-light: #D6A2E8;
+    --accent-coral: #FF7675;
+    
+    --bg-main: #FFF9F2;
+    --bg-card: #FFFFFF;
+    --text-main: #2D3436;
+    --text-muted: #636E72;
+    
+    --shadow-soft: 0 10px 25px rgba(255, 107, 129, 0.12);
+    --shadow-card: 0 12px 30px rgba(0, 0, 0, 0.06);
+    --shadow-button: 0 8px 18px rgba(255, 107, 129, 0.35);
+    
+    --radius-xl: 32px;
+    --radius-lg: 24px;
+    --radius-md: 18px;
+    --radius-full: 9999px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+body {
+    font-family: 'Nunito', 'Quicksand', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--bg-main);
+    background-image: 
+        radial-gradient(#FFEAA7 1.5px, transparent 1.5px),
+        radial-gradient(#DFE6E9 1.5px, #FFF9F2 1.5px);
+    background-size: 40px 40px;
+    background-position: 0 0, 20px 20px;
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+/* ==========================================================================
+   Top Header Bar
+   ========================================================================== */
+.header-bar {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    padding: 12px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.brand-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+}
+
+.logo-mascot {
+    width: 52px;
+    height: 52px;
+    background: linear-gradient(135deg, #FF6B81, #FFA502);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    box-shadow: 0 6px 15px rgba(255, 107, 129, 0.3);
+    animation: bounceMascot 3s ease-in-out infinite;
+}
+
+@keyframes bounceMascot {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-6px) rotate(5deg); }
+}
+
+.brand-text h1 {
+    font-size: 24px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #FF4757, #FFA502);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+}
+
+.brand-text p {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.stats-pill {
+    background: #FFF0F2;
+    border: 2px solid #FFD1D8;
+    padding: 8px 18px;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+    font-weight: 800;
+    color: #FF4757;
+}
+
+.stats-pill .star-icon {
+    font-size: 20px;
+    animation: starTwinkle 1.8s infinite alternate;
+}
+
+@keyframes starTwinkle {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.25) rotate(15deg); }
+}
+
+.header-btn {
+    border: none;
+    background: white;
+    padding: 10px 18px;
+    border-radius: var(--radius-full);
+    font-family: inherit;
+    font-weight: 800;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    box-shadow: var(--shadow-card);
+    transition: all 0.2s ease;
+    color: var(--text-main);
+    border: 2px solid transparent;
+}
+
+.header-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.header-btn.parent-btn {
+    background: linear-gradient(135deg, #70A1FF, #1E90FF);
+    color: white;
+}
+
+.header-btn.eyecare-btn {
+    background: #E8F8F5;
+    color: #00B894;
+    border-color: #55EFC4;
+}
+
+/* ==========================================================================
+   Age Selection Navigation Tabs
+   ========================================================================== */
+.age-nav-bar {
+    max-width: 1200px;
+    margin: 20px auto 10px;
+    padding: 0 20px;
+    width: 100%;
+}
+
+.age-tabs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+}
+
+.age-tab {
+    background: white;
+    border: 3px solid #E4E7EB;
+    border-radius: var(--radius-lg);
+    padding: 14px 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.03);
+}
+
+.age-tab:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
+}
+
+.age-tab.active {
+    border-color: #FF4757;
+    background: linear-gradient(135deg, #FFF0F2 0%, #FFFFFF 100%);
+    box-shadow: 0 10px 25px rgba(255, 71, 87, 0.2);
+    transform: translateY(-4px) scale(1.02);
+}
+
+.age-tab-icon {
+    font-size: 32px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #F1F2F6;
+}
+
+.age-tab.active .age-tab-icon {
+    background: #FFE0E6;
+}
+
+.age-tab-info h3 {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--text-main);
+    line-height: 1.2;
+}
+
+.age-tab.active h3 {
+    color: #FF4757;
+}
+
+.age-tab-info p {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+/* ==========================================================================
+   Main Content Layout
+   ========================================================================== */
+.main-container {
+    max-width: 1240px;
+    margin: 10px auto 30px;
+    padding: 0 20px;
+    width: 100%;
+    flex: 1;
+}
+
+/* Age Stage Banner */
+.stage-banner {
+    background: linear-gradient(135deg, #FF6B81 0%, #FFA502 100%);
+    border-radius: var(--radius-xl);
+    padding: 24px 32px;
+    color: white;
+    margin-bottom: 24px;
+    box-shadow: 0 12px 30px rgba(255, 107, 129, 0.25);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.stage-banner::after {
+    content: "🌸";
+    position: absolute;
+    right: -20px;
+    bottom: -30px;
+    font-size: 140px;
+    opacity: 0.15;
+    pointer-events: none;
+}
+
+.stage-text h2 {
+    font-size: 26px;
+    font-weight: 900;
+    margin-bottom: 6px;
+}
+
+.stage-text p {
+    font-size: 15px;
+    font-weight: 600;
+    opacity: 0.95;
+    max-width: 750px;
+    line-height: 1.4;
+}
+
+.stage-milestones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.milestone-tag {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(6px);
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+/* Navigation Sub-Tabs (Chế độ học) */
+.sub-nav-tabs {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+}
+
+.sub-nav-btn {
+    border: none;
+    background: white;
+    padding: 12px 24px;
+    border-radius: var(--radius-full);
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--text-muted);
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.sub-nav-btn:hover {
+    color: var(--text-main);
+    transform: translateY(-2px);
+}
+
+.sub-nav-btn.active {
+    background: var(--text-main);
+    color: white;
+    box-shadow: 0 8px 20px rgba(45, 52, 54, 0.25);
+}
+
+/* ==========================================================================
+   Flashcards Grid (Lớp 2, 3 Tuổi)
+   ========================================================================== */
+.category-block {
+    margin-bottom: 30px;
+}
+
+.category-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.category-header h3 {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--text-main);
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 18px;
+}
+
+.kid-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-card);
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 3px solid transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+}
+
+.kid-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary-light);
+}
+
+.kid-card-icon {
+    font-size: 64px;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.08));
+    transition: transform 0.3s ease;
+}
+
+.kid-card:hover .kid-card-icon {
+    transform: scale(1.15) rotate(5deg);
+}
+
+.kid-card-title {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--text-main);
+    margin-bottom: 4px;
+}
+
+.kid-card-sound {
+    font-size: 15px;
+    font-weight: 800;
+    color: #FF4757;
+    margin-bottom: 8px;
+    background: #FFF0F2;
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+}
+
+.kid-card-sentence {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.kid-card-actions {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+}
+
+.card-btn {
+    flex: 1;
+    border: none;
+    padding: 10px 12px;
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.card-btn.speak-btn {
+    background: #FFEAA7;
+    color: #D35400;
+}
+
+.card-btn.speak-btn:hover {
+    background: #FDCB6E;
+    transform: scale(1.05);
+}
+
+.card-btn.record-btn {
+    background: #FF7675;
+    color: white;
+}
+
+.card-btn.record-btn:hover {
+    background: #FF5252;
+    transform: scale(1.05);
+}
+
+/* ==========================================================================
+   Voice Studio / Speech Lab (Phòng Luyện Phát Âm)
+   ========================================================================== */
+.voice-studio-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.voice-studio-card {
+    background: white;
+    border-radius: var(--radius-xl);
+    width: 100%;
+    max-width: 580px;
+    padding: 36px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+    animation: modalPop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modalPop {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.close-modal-btn {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    background: #F1F2F6;
+    border: none;
+    font-size: 22px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    transition: all 0.2s ease;
+}
+
+.close-modal-btn:hover {
+    background: #FF4757;
+    color: white;
+    transform: rotate(90deg);
+}
+
+.studio-target-icon {
+    font-size: 80px;
+    margin-bottom: 12px;
+    animation: bounce 2s infinite alternate;
+}
+
+.studio-target-word {
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--text-main);
+    margin-bottom: 6px;
+}
+
+.studio-target-guide {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0984E3;
+    background: #EAF2F8;
+    padding: 8px 18px;
+    border-radius: var(--radius-full);
+    display: inline-block;
+    margin-bottom: 24px;
+}
+
+/* Mic Circle Button */
+.mic-action-area {
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.big-mic-btn {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(135deg, #FF4757, #FFA502);
+    color: white;
+    font-size: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 12px 30px rgba(255, 71, 87, 0.45);
+    transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+}
+
+.big-mic-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 16px 36px rgba(255, 71, 87, 0.55);
+}
+
+.big-mic-btn.listening {
+    background: linear-gradient(135deg, #2ED573, #1E90FF);
+    animation: pulseMic 1.2s infinite;
+}
+
+@keyframes pulseMic {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(46, 213, 115, 0.7); }
+    70% { transform: scale(1.12); box-shadow: 0 0 0 25px rgba(46, 213, 115, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(46, 213, 115, 0); }
+}
+
+.mic-hint {
+    margin-top: 14px;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--text-muted);
+}
+
+.speech-result-box {
+    margin-top: 20px;
+    padding: 16px;
+    border-radius: var(--radius-md);
+    background: #F8F9FA;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.stars-celebration {
+    font-size: 28px;
+    margin-bottom: 6px;
+}
+
+.speech-feedback-text {
+    font-size: 16px;
+    font-weight: 800;
+    color: #2ED573;
+}
+
+/* ==========================================================================
+   Nursery Rhymes & Story Garden (Lớp 4 Tuổi)
+   ========================================================================== */
+.rhyme-card {
+    background: white;
+    border-radius: var(--radius-xl);
+    padding: 28px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 24px;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 28px;
+    align-items: center;
+}
+
+.rhyme-illustration {
+    background: linear-gradient(135deg, #FFEAA7, #FAB1A0);
+    border-radius: var(--radius-lg);
+    height: 100%;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+}
+
+.rhyme-icon {
+    font-size: 72px;
+    margin-bottom: 12px;
+}
+
+.rhyme-content h3 {
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--text-main);
+    margin-bottom: 6px;
+}
+
+.rhyme-content p {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+}
+
+.rhyme-lyrics {
+    background: #FFF9F2;
+    border: 2px dashed #FFD1D8;
+    border-radius: var(--radius-md);
+    padding: 18px;
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1.8;
+    color: #2D3436;
+    margin-bottom: 18px;
+    max-height: 240px;
+    overflow-y: auto;
+}
+
+.rhyme-line.active-line {
+    color: #FF4757;
+    background: #FFE0E6;
+    border-radius: 8px;
+    padding: 2px 8px;
+    display: inline-block;
+}
+
+/* ==========================================================================
+   Alphabet & Syllable Train (Lớp 5 Tuổi)
+   ========================================================================== */
+.alphabet-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.letter-tile {
+    background: white;
+    border: 3px solid #DFE6E9;
+    border-radius: var(--radius-md);
+    padding: 14px 10px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.letter-tile:hover {
+    transform: translateY(-6px) scale(1.08);
+    border-color: #FFA502;
+    box-shadow: 0 8px 18px rgba(255, 165, 2, 0.25);
+}
+
+.letter-char {
+    font-size: 32px;
+    font-weight: 900;
+    color: #FF4757;
+    margin-bottom: 2px;
+}
+
+.letter-word {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+/* Tone Marks Showcase */
+.tones-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 14px;
+    margin-bottom: 30px;
+}
+
+.tone-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    box-shadow: var(--shadow-card);
+    border-left: 6px solid #FF4757;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tone-card:hover {
+    transform: translateY(-4px);
+}
+
+.tone-card h4 {
+    font-size: 16px;
+    font-weight: 900;
+    margin-bottom: 4px;
+}
+
+.tone-symbol {
+    font-size: 26px;
+    font-weight: 900;
+    color: #FF4757;
+    margin-bottom: 6px;
+}
+
+.tone-example {
+    font-size: 13px;
+    font-weight: 800;
+    color: #0984E3;
+}
+
+/* Syllable Train (Cỗ Xe Ghép Vần) */
+.train-wrapper {
+    background: white;
+    border-radius: var(--radius-xl);
+    padding: 30px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.train-title {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--text-main);
+    margin-bottom: 18px;
+}
+
+.train-carts {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.cart-box {
+    background: #FFF0F2;
+    border: 3px dashed #FF6B81;
+    border-radius: var(--radius-lg);
+    width: 90px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 38px;
+    font-weight: 900;
+    color: #FF4757;
+}
+
+.cart-plus {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--text-muted);
+}
+
+.cart-box.result-box {
+    background: linear-gradient(135deg, #2ED573, #1E90FF);
+    border: none;
+    color: white;
+    box-shadow: 0 8px 20px rgba(46, 213, 115, 0.35);
+}
+
+/* ==========================================================================
+   Parent Guide Modal
+   ========================================================================== */
+.parent-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.parent-modal-content {
+    background: white;
+    border-radius: var(--radius-xl);
+    width: 100%;
+    max-width: 800px;
+    max-height: 85vh;
+    padding: 36px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    position: relative;
+}
+
+.parent-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #F1F2F6;
+    padding-bottom: 16px;
+}
+
+.parent-modal-header h2 {
+    font-size: 22px;
+    font-weight: 900;
+    color: #1E90FF;
+}
+
+.guide-item-card {
+    background: #F8F9FA;
+    border-radius: var(--radius-lg);
+    padding: 18px;
+    margin-bottom: 16px;
+    border-left: 6px solid #1E90FF;
+}
+
+.guide-item-card h4 {
+    font-size: 17px;
+    font-weight: 900;
+    color: var(--text-main);
+    margin-bottom: 8px;
+}
+
+.guide-item-card ul {
+    padding-left: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   Eye Care Rest Reminder Modal
+   ========================================================================== */
+.eyecare-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(45, 52, 54, 0.85);
+    backdrop-filter: blur(12px);
+    z-index: 300;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+}
+
+.eyecare-card {
+    background: white;
+    border-radius: var(--radius-xl);
+    max-width: 480px;
+    padding: 40px 30px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.eyecare-icon {
+    font-size: 72px;
+    margin-bottom: 16px;
+    animation: gentleWiggle 2s infinite ease-in-out;
+}
+
+@keyframes gentleWiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-8deg); }
+    75% { transform: rotate(8deg); }
+}
+
+.eyecare-card h2 {
+    font-size: 24px;
+    font-weight: 900;
+    color: #00B894;
+    margin-bottom: 10px;
+}
+
+.eyecare-card p {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+/* ==========================================================================
+   Responsive Breakpoints
+   ========================================================================== */
+@media (max-width: 900px) {
+    .age-tabs {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .rhyme-card {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .header-bar {
+        padding: 10px 16px;
+    }
+    .brand-text h1 {
+        font-size: 18px;
+    }
+    .age-tabs {
+        grid-template-columns: 1fr;
+    }
+    .stage-banner {
+        padding: 20px;
+    }
+    .stage-text h2 {
+        font-size: 20px;
+    }
+}

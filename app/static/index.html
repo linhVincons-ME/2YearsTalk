@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bé Tập Nói - Bé Yêu Học Tiếng Việt (2 - 5 Tuổi)</title>
+    <meta name="description" content="Phần mềm ứng dụng Desktop đào tạo và hỗ trợ trẻ 2, 3, 4, 5 tuổi tập nói tiếng Việt chuẩn, phát triển ngôn ngữ toàn diện theo phương pháp Montessori và Âm ngữ trị liệu.">
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+
+    <!-- Header Thanh Điều Hướng -->
+    <header class="header-bar">
+        <div class="brand-wrapper" onclick="location.reload()">
+            <div class="logo-mascot">👶</div>
+            <div class="brand-text">
+                <h1>Bé Tập Nói</h1>
+                <p>Tiếng Việt Cho Bé Yêu (2 - 5 Tuổi)</p>
+            </div>
+        </div>
+
+        <div class="header-right">
+            <div class="stats-pill" title="Tổng số ngôi sao bé đạt được">
+                <span class="star-icon">⭐</span>
+                <span id="user-stars-count">15</span>
+                <span style="font-size: 13px; font-weight: 700; color: #636E72;">Sao</span>
+            </div>
+
+            <button class="header-btn parent-btn" id="parent-guide-btn" title="Cẩm nang hướng dẫn cha mẹ và chuyên gia trị liệu">
+                <span>👨‍👩‍👧</span> Cẩm Nang Ba Mẹ
+            </button>
+
+            <button class="header-btn eyecare-btn" title="Chế độ bảo vệ thị lực cho bé">
+                <span>👀</span> 20m Nghỉ Ngơi
+            </button>
+        </div>
+    </header>
+
+    <!-- Chọn Lớp & Độ Tuổi Học -->
+    <nav class="age-nav-bar" aria-label="Chọn độ tuổi cho bé">
+        <div class="age-tabs">
+            <div class="age-tab active" data-age="age_2" id="tab-age-2">
+                <div class="age-tab-icon">🌱</div>
+                <div class="age-tab-info">
+                    <h3>2 Tuổi</h3>
+                    <p>Bật Âm & Từ Đơn</p>
+                </div>
+            </div>
+
+            <div class="age-tab" data-age="age_3" id="tab-age-3">
+                <div class="age-tab-icon">🌼</div>
+                <div class="age-tab-info">
+                    <h3>3 Tuổi</h3>
+                    <p>Ghép Câu & Nhận Biết</p>
+                </div>
+            </div>
+
+            <div class="age-tab" data-age="age_4" id="tab-age-4">
+                <div class="age-tab-icon">🌺</div>
+                <div class="age-tab-info">
+                    <h3>4 Tuổi</h3>
+                    <p>Đồng Dao & Kể Chuyện</p>
+                </div>
+            </div>
+
+            <div class="age-tab" data-age="age_5" id="tab-age-5">
+                <div class="age-tab-icon">🌻</div>
+                <div class="age-tab-info">
+                    <h3>5 Tuổi</h3>
+                    <p>Chữ Cái & Ghép Vần</p>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Nội dung Động Theo Độ Tuổi -->
+    <main class="main-container" id="main-dynamic-content">
+        <!-- Được sinh động bởi app.js -->
+    </main>
+
+    <!-- Modal Phòng Luyện Nói & Thu Âm (Voice Studio) -->
+    <div class="voice-studio-modal" id="voice-studio-modal">
+        <div class="voice-studio-card">
+            <button class="close-modal-btn" id="close-studio-btn" aria-label="Đóng">&times;</button>
+            <div class="studio-target-icon" id="studio-icon">🐶</div>
+            <div class="studio-target-word" id="studio-word">Con Chó</div>
+            <div class="studio-target-guide" id="studio-guide">Bé cùng cô phát âm to rõ ràng nào!</div>
+
+            <!-- Vùng Micro Bấm Nói -->
+            <div class="mic-action-area">
+                <button class="big-mic-btn" id="big-mic-btn" title="Bấm vào để nói">
+                    🎤
+                </button>
+                <div class="mic-hint" id="mic-hint-text">Chạm vào Micro để bé nói nhé!</div>
+            </div>
+
+            <!-- Kết Quả Chấm Điểm & Khích Lệ -->
+            <div class="speech-result-box" id="speech-result-box">
+                <div style="font-size:15px; font-weight:800; color:#636E72;">
+                    Bấm chiếc Micro màu sắc bên dưới để bắt đầu nói nào!
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Cẩm Nang Hướng Dẫn Phụ Huynh (Parent Guide) -->
+    <div class="parent-modal" id="parent-modal">
+        <div class="parent-modal-content">
+            <div class="parent-modal-header">
+                <h2>👨‍👩‍👧 Cẩm Nang Âm Ngữ Trị Liệu & Kích Hoạt Ngôn Ngữ Trẻ Em</h2>
+                <button class="close-modal-btn" id="close-parent-modal">&times;</button>
+            </div>
+            <div id="parent-guide-list">
+                <!-- Được nạp tự động qua API -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Nhắc Nhở Nghỉ Ngơi Bảo Vệ Mắt (Eye-Care Timer) -->
+    <div class="eyecare-modal" id="eyecare-modal">
+        <div class="eyecare-card">
+            <div class="eyecare-icon">🌟</div>
+            <h2>Bé Ơi Nghỉ Mắt Nào!</h2>
+            <p>
+                Bé đã học tập rất chăm chỉ và giỏi giang trong 20 phút vừa qua.<br>
+                Bé hãy đứng dậy vươn vai, uống một ngụm nước và nhìn ra xa để đôi mắt luôn sáng trong nhé!
+            </p>
+            <button class="header-btn" id="resume-eyecare-btn" style="background:#00B894; color:white; width:100%; justify-content:center; padding:14px;">
+                Dạ, Con Đã Tập Thể Dục Xong Rồi! 🚀
+            </button>
+        </div>
+    </div>
+
+    <!-- Script Thư Viện Xử Lý -->
+    <script src="/static/js/audio_effects.js"></script>
+    <script src="/static/js/speech_engine.js"></script>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
