@@ -83,6 +83,7 @@ def open_desktop_window_delayed(url: str, delay: float = 1.0):
     """Mở cửa sổ Desktop ứng dụng trong luồng nền sau khi server đã sẵn sàng"""
     def _launcher():
         time.sleep(delay)
+        opened = False
         browser_candidates = [
             r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
             r"C:\Program Files\Microsoft\Edge\Application\msedge.exe",
@@ -99,17 +100,19 @@ def open_desktop_window_delayed(url: str, delay: float = 1.0):
                     cmd = [
                         browser_path,
                         f"--app={url}",
+                        "--new-window",
                         "--window-size=1340,880",
                         "--app-auto-launched"
                     ]
                     subprocess.Popen(cmd)
-                    return
+                    opened = True
+                    break
                 except Exception as e:
-                    print(f"[*] Thử mở trình duyệt mặc định: {e}")
+                    print(f"[*] Lỗi mở qua {os.path.basename(browser_path)}: {e}")
 
-        # Fallback
-        print("🌐 Đang mở ứng dụng trên trình duyệt mặc định...")
-        webbrowser.open(url)
+        if not opened:
+            print("🌐 Đang mở ứng dụng trên trình duyệt mặc định...")
+            webbrowser.open(url)
 
     thread = threading.Thread(target=_launcher, daemon=True)
     thread.start()
